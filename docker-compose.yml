@@ -1,0 +1,29 @@
+# docker-compose.yml
+version: "3.8"
+
+networks:
+  mpi-net:
+
+services:
+  worker:
+    build: .
+    image: mpi-service:latest
+    networks:
+      - mpi-net
+    deploy:
+      replicas: 5
+      restart_policy:
+        condition: on-failure
+
+  manager:
+    build: .
+    image: mpi-service:latest
+    networks:
+      - mpi-net
+    depends_on:
+      - worker
+    command: >
+      mpirun --allow-run-as-root
+             --host manager,worker-1,worker-2,worker-3,worker-4,worker-5
+             -np 6
+             python /app/mpi_service.py --processors 5

@@ -1,0 +1,5 @@
+{
+  "max_messages_per_queue": 100,
+  "persist_interval_seconds": 60,
+  "storage_path": "queues.json"
+}
